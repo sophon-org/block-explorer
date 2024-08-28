@@ -5,13 +5,6 @@
         <div class="logo-container flex justify-start">
           <router-link class="flex items-center gap-2 text-black no-underline" :to="{ name: 'home' }">
             <img src="/images/logo-sophon-testnet.svg" />
-            <!-- <span class="text-[46px]">
-              <sophon />
-            </span>
-            <span class="text-2xl font-medium">Sophon</span>
-            <span class="top-[2px] rounded-full bg-blue px-2 text-2xs/4 font-semibold uppercase text-white"
-              >Testnet</span
-            > -->
           </router-link>
         </div>
         <div class="burger-button-container -my-2 -mr-2 lg:hidden">
