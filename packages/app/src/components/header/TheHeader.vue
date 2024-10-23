@@ -119,13 +119,15 @@ import TwitterIcon from "@/components/icons/TwitterIcon.vue";
 
 import useContext from "@/composables/useContext";
 
+import config from "@/configs/hyperchain.config.json";
+
 const { t } = useI18n({ useScope: "global" });
 const { currentNetwork } = useContext();
 
 const navigation = reactive([
   {
     label: computed(() => t("header.nav.documentation")),
-    url: `https://block-explorer-api.testnet.sophon.xyz/docs`,
+    url: `${config.networks[1].apiUrl}/docs`,
   },
 ]);
 
@@ -151,7 +153,7 @@ const blockExplorerLinks = reactive([
 const links = [
   {
     label: computed(() => t("header.nav.apiDocs")),
-    url: computed(() => "https://block-explorer-api.testnet.sophon.xyz/docs"),
+    url: computed(() => `${config.networks[1].apiUrl}/docs`),
   },
   {
     label: computed(() => t("header.nav.contractVerification")),
