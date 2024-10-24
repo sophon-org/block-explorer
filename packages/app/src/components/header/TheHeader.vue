@@ -127,7 +127,7 @@ const { currentNetwork } = useContext();
 const navigation = reactive([
   {
     label: computed(() => t("header.nav.documentation")),
-    url: `${config.networks[1].apiUrl}/docs`,
+    url: `${config.networks[0].apiUrl}/docs`,
   },
 ]);
 
@@ -153,7 +153,7 @@ const blockExplorerLinks = reactive([
 const links = [
   {
     label: computed(() => t("header.nav.apiDocs")),
-    url: computed(() => `${config.networks[1].apiUrl}/docs`),
+    url: computed(() => `${config.networks[0].apiUrl}/docs`),
   },
   {
     label: computed(() => t("header.nav.contractVerification")),

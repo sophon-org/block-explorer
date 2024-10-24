@@ -32,7 +32,7 @@ const { t } = useI18n();
 const navigation = reactive([
   {
     label: computed(() => t("footer.nav.docs")),
-    url: `${config.networks[1].apiUrl}/docs`,
+    url: `${config.networks[0].apiUrl}/docs`,
   },
   {
     label: computed(() => t("footer.nav.terms")),
