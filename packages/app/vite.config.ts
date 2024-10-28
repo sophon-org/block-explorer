@@ -10,6 +10,9 @@ export default defineConfig({
   },
   build: {
     sourcemap: "hidden",
+    commonjsOptions: {
+      transformMixedEsModules: true,
+    },
     rollupOptions: {
       output: {
         manualChunks: (id) => {
@@ -47,6 +50,9 @@ export default defineConfig({
         },
       },
     },
+  },
+  optimizeDeps: {
+    include: ["vue", "vue-router", "vue-i18n"],
   },
   plugins: [vue()],
   resolve: {
