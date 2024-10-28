@@ -17,12 +17,15 @@ export async function loadEnvironmentConfig(runtimeConfig: RuntimeConfig): Promi
   let envConfig: EnvironmentConfig;
   if (runtimeConfig.appEnvironment === "default") {
     try {
-      envConfig = (await import(`../configs/${HYPERCHAIN_CONFIG_NAME}.config.json`)).default;
+      const hyperConfig = await import(`../configs/${HYPERCHAIN_CONFIG_NAME}.config.json`);
+      envConfig = hyperConfig.default || hyperConfig;
     } catch {
-      envConfig = (await import(`../configs/${DEVELOPMENT_CONFIG_NAME}.config.json`)).default;
+      const devConfig = await import(`../configs/${DEVELOPMENT_CONFIG_NAME}.config.json`);
+      envConfig = devConfig.default || devConfig;
     }
   } else {
-    envConfig = (await import(`../configs/${runtimeConfig.appEnvironment}.config.json`)).default;
+    const config = await import(`../configs/${runtimeConfig.appEnvironment}.config.json`);
+    envConfig = config.default || config;
   }
   config.value = envConfig;
 }

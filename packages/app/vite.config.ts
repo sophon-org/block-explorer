@@ -12,6 +12,8 @@ export default defineConfig({
     sourcemap: "hidden",
     commonjsOptions: {
       transformMixedEsModules: true,
+      include: [/node_modules/],
+      exclude: [/node_modules\/vue-i18n/],
     },
     rollupOptions: {
       output: {
@@ -53,11 +55,13 @@ export default defineConfig({
   },
   optimizeDeps: {
     include: ["vue", "vue-router", "vue-i18n"],
+    exclude: ["vue-demi"],
   },
   plugins: [vue()],
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),
+      "vue-i18n": "vue-i18n/dist/vue-i18n.esm-bundler.js",
     },
   },
   test: {
