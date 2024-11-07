@@ -25,7 +25,7 @@ const retrieveTokens = useMemoize(
       page++;
       hasMore = !!tokensParams.minLiquidity && tokensResponse.meta.totalPages > tokensResponse.meta.currentPage;
     }
-  
+
     if (context.currentNetwork.value.zkTokenAddress) {
       const fetchedZkTokenIndex = tokens.findIndex(
         (token) => token.l2Address === context.currentNetwork.value.zkTokenAddress
@@ -45,9 +45,11 @@ const retrieveTokens = useMemoize(
         }
       }
     }
-    
+
     // Filter out tokens that are in the exclude list
-    const filteredTokens = tokens.filter(token => !context.currentNetwork.value.excludeTokenAddresses?.includes(token.l2Address))
+    const filteredTokens = tokens.filter(
+      (token) => !context.currentNetwork.value.excludeTokenAddresses?.includes(token.l2Address)
+    );
 
     return filteredTokens;
   },
