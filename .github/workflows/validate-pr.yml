@@ -43,7 +43,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          npm ci
+          npm ci --include=optional
 
       - name: Lint
         run: |
