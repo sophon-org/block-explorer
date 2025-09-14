@@ -169,6 +169,8 @@ const navigation = reactive([
   },
 ]);
 
+console.log(navigation);
+
 const blockExplorerLinks = reactive([
   {
     label: computed(() => t("blocksView.title")),
