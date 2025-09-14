@@ -64,17 +64,17 @@ export default (context = useContext()) => {
 
       let res;
       const signerAddress = await signer.getAddress();
-      
+
       // Check if the contract is whitelisted for paymaster sponsorship
       if (usePaymaster) {
         const provider = new Provider(context.currentNetwork.value.rpcUrl);
         const isContractWhitelisted = await checkIsPaymasterWhitelisted(address, provider);
-        
+
         if (!isContractWhitelisted) {
           usePaymaster = false;
         }
       }
-      
+
       if (usePaymaster) {
         res = await method(
           ...[
