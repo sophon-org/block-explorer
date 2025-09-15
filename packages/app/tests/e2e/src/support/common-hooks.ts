@@ -61,20 +61,25 @@ Before({ tags: "@prividium" }, async function (this: ICustomWorld, { pickle }: I
     seed: "test test test test test test test test test test test junk",
   });
 
+  // @ts-ignore
   this.context = context;
+  // @ts-ignore
   this.metamask = metamask;
+  // @ts-ignore
   this.browser = context.browser();
-  prividiumBrowser = this.browser;
+  // @ts-ignore
+  prividiumBrowser = this.browser ?? null;
 
   await context.grantPermissions(["clipboard-read", "clipboard-write"]);
 
+  // @ts-ignore
   this.page = await context.newPage();
   this.feature = pickle;
 
   await context.tracing.start({ screenshots: true, snapshots: true });
 
-  await this.page.goto(`${config.BASE_URL}/login`);
-  await this.page.waitForLoadState();
+  await this.page?.goto(`${config.BASE_URL}/login`);
+  await this.page?.waitForLoadState();
 });
 
 After({ tags: "@prividium" }, async function (this: ICustomWorld, { result }: ITestCaseHookParameter) {
