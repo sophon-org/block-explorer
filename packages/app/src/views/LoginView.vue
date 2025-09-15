@@ -47,6 +47,10 @@ const handleLogin = async () => {
       router.push({ name: "not-authorized" });
       return;
     }
+    if (error instanceof Error && error.message === "Prividium authentication is not configured for this network") {
+      router.push({ name: "home" });
+      return;
+    }
     console.error("Login failed:", error);
   }
 };
