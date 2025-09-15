@@ -5,7 +5,7 @@ import type { Pickle } from "@cucumber/messages";
 import type { PlaywrightTestOptions } from "@playwright/test";
 import type { Dappwright } from "@tenkeylabs/dappwright";
 import type { AxiosInstance } from "axios";
-import type { Browser, BrowserContext, Page } from "playwright-core";
+import type { Browser, BrowserContext, Page } from "playwright";
 
 export interface ICustomWorld extends World {
   browser?: Browser | null;
