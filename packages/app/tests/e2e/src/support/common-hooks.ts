@@ -43,7 +43,6 @@ After({ tags: "not @prividium" }, async function (this: ICustomWorld, { result }
 });
 
 Before({ tags: "@prividium" }, async function (this: ICustomWorld, { pickle }: ITestCaseHookParameter) {
-  console.log("[TEST] running before");
   this.testName = pickle.name.replace(/\W/g, "-");
 
   process.env.TEST_PARALLEL_INDEX = "0";
@@ -62,8 +61,6 @@ Before({ tags: "@prividium" }, async function (this: ICustomWorld, { pickle }: I
     seed: "test test test test test test test test test test test junk",
   });
 
-  console.log("[TEST] metamask", metamask);
-
   // @ts-ignore
   this.context = context;
   // @ts-ignore
@@ -81,14 +78,11 @@ Before({ tags: "@prividium" }, async function (this: ICustomWorld, { pickle }: I
 
   await context.tracing.start({ screenshots: true, snapshots: true });
 
-  console.log("[TEST] go to page");
-
   await this.page?.goto(`${config.BASE_URL}/login`);
   await this.page?.waitForLoadState();
 });
 
 After({ tags: "@prividium" }, async function (this: ICustomWorld, { result }: ITestCaseHookParameter) {
-  console.log("[TEST] after");
   await new Helper(this).getScreenshotOnFail(result);
   await this.context?.close();
   await this.browser?.close();

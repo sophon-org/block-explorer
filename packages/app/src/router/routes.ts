@@ -17,33 +17,33 @@ export default [
       title: "document.home",
     },
   },
-  {
-    path: "/login",
-    name: "login",
-    component: LoginView,
-    meta: {
-      title: "loginView.title",
-      requiresAuth: false,
-    },
-  },
-  {
-    path: "/auth/callback",
-    name: "auth-callback",
-    component: AuthCallbackView,
-    meta: {
-      title: "loginView.title",
-      requiresAuth: false,
-    },
-  },
-  {
-    path: "/not-authorized",
-    name: "not-authorized",
-    component: NotAuthorizedView,
-    meta: {
-      title: "notAuthorizedView.title",
-      requiresAuth: false,
-    },
-  },
+  // {
+  //   path: "/login",
+  //   name: "login",
+  //   component: LoginView,
+  //   meta: {
+  //     title: "loginView.title",
+  //     requiresAuth: false,
+  //   },
+  // },
+  // {
+  //   path: "/auth/callback",
+  //   name: "auth-callback",
+  //   component: AuthCallbackView,
+  //   meta: {
+  //     title: "loginView.title",
+  //     requiresAuth: false,
+  //   },
+  // },
+  // {
+  //   path: "/not-authorized",
+  //   name: "not-authorized",
+  //   component: NotAuthorizedView,
+  //   meta: {
+  //     title: "notAuthorizedView.title",
+  //     requiresAuth: false,
+  //   },
+  // },
   {
     path: "/blocks/",
     name: "blocks",
