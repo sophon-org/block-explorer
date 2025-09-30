@@ -141,7 +141,7 @@ const getSNSAddress = async (name: string): Promise<Address | null> => {
     return null;
   }
 
-  return await resolveName(name, currentNetwork.value.l2ChainId === 531050104);
+  return await resolveName(name, currentNetwork.value.l2ChainId === 531050204);
 };
 
 const getSNSName = async (address: Address): Promise<string | null> => {
@@ -149,7 +149,7 @@ const getSNSName = async (address: Address): Promise<string | null> => {
     return null;
   }
 
-  return await resolveAddress(address, currentNetwork.value.l2ChainId === 531050104);
+  return await resolveAddress(address, currentNetwork.value.l2ChainId === 531050204);
 };
 
 export default () => {

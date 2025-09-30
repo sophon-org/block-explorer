@@ -35,7 +35,7 @@
       "bridgeUrl": "https://portal.testnet.sophon.xyz/bridge",
       "hostnames": ["https://explorer.testnet.sophon.xyz"],
       "icon": "/images/icons/sophon.svg",
-      "l2ChainId": 531050104,
+      "l2ChainId": 531050204,
       "l2NetworkName": "Sophon Testnet",
       "maintenance": false,
       "name": "Sepolia",
