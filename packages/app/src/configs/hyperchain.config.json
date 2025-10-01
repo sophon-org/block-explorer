@@ -2,38 +2,10 @@
   "networks": [
     {
       "groupId": "sophon",
-      "apiUrl": "https://api-explorer.sophon.xyz",
-      "verificationApiUrl": "https://verification-explorer.sophon.xyz",
-      "bridgeUrl": "https://portal.sophon.xyz/bridge",
-      "hostnames": ["https://explorer.sophon.xyz"],
-      "icon": "/images/icons/sophon.svg",
-      "l2ChainId": 50104,
-      "l2NetworkName": "Sophon",
-      "maintenance": false,
-      "name": "Ethereum",
-      "l1ExplorerUrl": "https://etherscan.io",
-      "settlementChains": [
-        {
-          "explorerUrl": "https://gateway.explorer.zksync.io",
-          "name": "Gateway",
-          "chainId": 9075
-        },
-        {
-          "explorerUrl": "https://etherscan.io",
-          "name": "Ethereum",
-          "chainId": 1
-        }
-      ],
-      "published": true,
-      "rpcUrl": "https://rpc.sophon.xyz",
-      "excludeTokenAddresses": []
-    },
-    {
-      "groupId": "sophon",
-      "apiUrl": "https://block-explorer-api.testnet.sophon.xyz",
+      "apiUrl": "https://block-explorer-api.zksync-os-testnet-sophon.zksync.dev",
       "verificationApiUrl": "https://api-explorer-verify.testnet.sophon.xyz",
       "bridgeUrl": "https://portal.testnet.sophon.xyz/bridge",
-      "hostnames": ["https://explorer.testnet.sophon.xyz"],
+      "hostnames": ["https://block-explorer.zksync-os-testnet-sophon.zksync.dev"],
       "icon": "/images/icons/sophon.svg",
       "l2ChainId": 531050204,
       "l2NetworkName": "Sophon Testnet",
@@ -53,7 +25,7 @@
         }
       ],
       "published": true,
-      "rpcUrl": "https://rpc.testnet.sophon.xyz",
+      "rpcUrl": "https://zksync-os-testnet-sophon.zksync.dev",
       "excludeTokenAddresses": []
     },
     {
@@ -70,21 +42,6 @@
       "name": "gateway-testnet",
       "published": true,
       "rpcUrl": "https://rpc.era-gateway-testnet.zksync.dev"
-    },
-    {
-      "groupId": "gateway",
-      "apiUrl": "https://block-explorer-api.era-gateway-mainnet.zksync.dev",
-      "verificationApiUrl": "https://rpc-explorer-verify.era-gateway-mainnet.zksync.dev",
-      "bridgeUrl": "https://portal.era-gateway-mainnet.zksync.dev/bridge",
-      "hostnames": ["https://gateway.explorer.zksync.io"],
-      "icon": "/images/icons/zksync-arrows.svg",
-      "l1ExplorerUrl": "https://etherscan.io",
-      "l2ChainId": 9075,
-      "l2NetworkName": "ZKsync Gateway Mainnet",
-      "maintenance": false,
-      "name": "gateway-mainnet",
-      "published": true,
-      "rpcUrl": "https://rpc.era-gateway-mainnet.zksync.dev"
     }
   ]
 }
