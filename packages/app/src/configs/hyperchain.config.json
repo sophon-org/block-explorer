@@ -4,7 +4,7 @@
       "groupId": "sophon",
       "apiUrl": "https://block-explorer-api.zksync-os-testnet-sophon.zksync.dev",
       "verificationApiUrl": "https://api-explorer-verify.testnet.sophon.xyz",
-      "bridgeUrl": "https://portal.testnet.sophon.xyz/bridge",
+      "bridgeUrl": "https://portal.zksync-os-testnet-sophon.zksync.dev/bridge",
       "hostnames": ["https://block-explorer.zksync-os-testnet-sophon.zksync.dev"],
       "icon": "/images/icons/sophon.svg",
       "l2ChainId": 531050204,
