@@ -231,8 +231,6 @@ import Table from "@/components/common/table/Table.vue";
 import TableBodyColumn from "@/components/common/table/TableBodyColumn.vue";
 import TableHeadColumn from "@/components/common/table/TableHeadColumn.vue";
 import TimeField from "@/components/common/table/fields/TimeField.vue";
-import EthereumIcon from "@/components/icons/Ethereum.vue";
-import GatewayIcon from "@/components/icons/Gateway.vue";
 import SophonIcon from "@/components/icons/Sophon.vue";
 import TokenAmountPriceTableCell from "@/components/transactions/TokenAmountPriceTableCell.vue";
 import TransactionDirectionTableCell from "@/components/transactions/TransactionDirectionTableCell.vue";
@@ -361,11 +359,9 @@ const transactions = computed<TransactionListItemMapped[] | undefined>(() => {
       fromNetwork: transaction.isL1Originated ? "L1" : "L2",
       toNetwork: "L2", // even withdrawals go through L2 addresses (800A or bridge addresses)
       statusColor: transaction.status === "failed" ? "danger" : "dark-success",
-      statusIcon: ["failed", "included"].includes(transaction.status)
-        ? SophonIcon
-        : isGatewaySettlementChain(transaction.executeChainId || transaction.proveChainId || transaction.commitChainId)
-        ? GatewayIcon
-        : EthereumIcon,
+      // replace finality status with execution status here
+      status: ["verified", "proved", "committed"].includes(transaction.status) ? "included" : transaction.status,
+      statusIcon: SophonIcon,
       isContractDeploymentTx,
       displayedTxReceiver: isContractDeploymentTx ? transaction.contractAddress : transaction.to,
     };

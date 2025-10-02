@@ -21,8 +21,8 @@ import {
   BlocksBatchProcessingMetricLabels,
   BlockProcessingMetricLabels,
 } from "../metrics";
-import { BLOCKS_REVERT_DETECTED_EVENT } from "../constants";
-import { unixTimeToDateString } from "../utils/date";
+import { BLOCKS_REVERT_DETECTED_EVENT, L1_ORIGINATED_TX_TYPES } from "../constants";
+import { unixTimeToDate } from "../utils/date";
 
 @Injectable()
 export class BlockProcessor {
@@ -57,7 +57,7 @@ export class BlockProcessor {
   }
 
   public async processNextBlocksRange(): Promise<boolean> {
-    const lastDbBlock = await this.blockRepository.getLastBlock({
+    const lastDbBlock = await this.blockRepository.getBlock({
       where: this.buildBlockRangeCondition(),
       select: { number: true, hash: true },
     });
@@ -83,7 +83,7 @@ export class BlockProcessor {
       return false;
     }
 
-    const allBlocksExist = !blocksToProcess.find((blockInfo) => !blockInfo?.block || !blockInfo?.blockDetails);
+    const allBlocksExist = !blocksToProcess.find((blockInfo) => !blockInfo?.block);
     if (!allBlocksExist) {
       // We don't need to handle this potential revert as these blocks are not in DB yet,
       // try again later once these blocks are present in blockchain again.
@@ -149,40 +149,24 @@ export class BlockProcessor {
   private async addBlock(blockData: BlockData): Promise<void> {
     let blockProcessingStatus = "success";
 
-    const { block, blockDetails } = blockData;
+    const { block } = blockData;
     const blockNumber = block.number;
     this.logger.log({ message: `Adding block #${blockNumber}`, blockNumber });
 
     const stopDurationMeasuring = this.processingDurationMetric.startTimer();
     try {
-      await this.blockRepository.add(block, blockDetails);
+      const l1TxCount = blockData.transactions.filter((tx) =>
+        L1_ORIGINATED_TX_TYPES.includes(tx.transaction.type)
+      ).length;
+      await this.blockRepository.add({
+        ...block,
+        l1TxCount: l1TxCount,
+        l2TxCount: blockData.transactions.length - l1TxCount,
+        // TODO: think about changing the DB schema so we can save this field as is with no type casting
+        timestamp: unixTimeToDate(block.timestamp),
+      });
 
-      await Promise.all(
-        blockData.transactions.map((transaction) => this.transactionProcessor.add(blockNumber, transaction))
-      );
-
-      if (blockData.blockLogs.length) {
-        this.logger.debug({
-          message: "Saving block logs to the DB",
-          blockNumber: blockNumber,
-        });
-        await this.logRepository.addMany(
-          blockData.blockLogs.map((log) => ({
-            ...log,
-            timestamp: unixTimeToDateString(blockDetails.timestamp),
-            logIndex: log.index,
-            topics: [...log.topics],
-          }))
-        );
-      }
-
-      if (blockData.blockTransfers.length) {
-        this.logger.debug({
-          message: "Saving block transfers to the DB",
-          blockNumber: blockNumber,
-        });
-        await this.transferRepository.addMany(blockData.blockTransfers);
-      }
+      await Promise.all(blockData.transactions.map((transaction) => this.transactionProcessor.add(block, transaction)));
 
       if (blockData.changedBalances.length) {
         this.logger.debug({ message: "Updating balances and tokens", blockNumber });

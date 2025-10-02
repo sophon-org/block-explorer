@@ -180,10 +180,6 @@ const blockExplorerLinks = reactive([
     to: { name: "blocks" },
   },
   {
-    label: computed(() => t("batches.title")),
-    to: { name: "batches" },
-  },
-  {
     label: computed(() => t("transactionsView.title")),
     to: { name: "transactions" },
   },
