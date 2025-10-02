@@ -10,6 +10,7 @@ import type { AbiFragment } from "./useAddress";
 import type { Signer } from "zksync-ethers";
 
 import { checkIsPaymasterWhitelisted, PAYMASTER_ADDRESS } from "@/utils/checkIsPaymasterWhitelisted";
+import { BLACKLISTED_ACCOUNT_ADDRESSES } from "@/utils/constants";
 
 export const PAYABLE_AMOUNT_PARAM_NAME = "payable_function_payable_amount";
 
@@ -74,6 +75,10 @@ export default (context = useContext()) => {
 
       let res;
       const signerAddress = await signer.getAddress();
+
+      if (BLACKLISTED_ACCOUNT_ADDRESSES.includes(signerAddress)) {
+        usePaymaster = false;
+      }
 
       // Check if the contract is whitelisted for paymaster sponsorship
       if (usePaymaster) {
