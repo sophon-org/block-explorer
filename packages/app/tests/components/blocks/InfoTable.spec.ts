@@ -6,7 +6,6 @@ import { mount, RouterLinkStub } from "@vue/test-utils";
 
 import InfoTable from "@/components/blocks/InfoTable.vue";
 import InfoTooltip from "@/components/common/InfoTooltip.vue";
-import Tooltip from "@/components/common/Tooltip.vue";
 
 import enUS from "@/locales/en.json";
 
@@ -48,7 +47,7 @@ describe("InfoTable:", () => {
           l1TxCount: 1,
           l2TxCount: 0,
           hash: "0xcd7533748f8f0c8f406f366e83d5e92d174845405418745d0f7228b85025cd6e",
-          status: "verified",
+          status: "executed",
         },
         blockNumber: "1",
         loading: false,
@@ -144,7 +143,7 @@ describe("InfoTable:", () => {
             l1TxCount: 1,
             l2TxCount: 0,
             hash: "0xcd7533748f8f0c8f406f366e83d5e92d174845405418745d0f7228b85025cd6e",
-            status: "verified",
+            status: "executed",
           },
           blockNumber: "1",
           loading: false,
