@@ -1,16 +1,12 @@
 import { computed, ref } from "vue";
 
-import { Contract, parseEther } from "ethers";
-import { Provider, utils } from "zksync-ethers";
+import { Contract, JsonRpcProvider, parseEther } from "ethers";
 
 import useContext from "@/composables/useContext";
 import { processException, default as useWallet, type WalletError } from "@/composables/useWallet";
 
 import type { AbiFragment } from "./useAddress";
-import type { Signer } from "zksync-ethers";
-
-import { checkIsPaymasterWhitelisted, PAYMASTER_ADDRESS } from "@/utils/checkIsPaymasterWhitelisted";
-import { BLACKLISTED_ACCOUNT_ADDRESSES } from "@/utils/constants";
+import type { AbstractSigner } from "ethers";
 
 export const PAYABLE_AMOUNT_PARAM_NAME = "payable_function_payable_amount";
 
@@ -48,8 +44,7 @@ export default (context = useContext()) => {
   const writeFunction = async (
     address: string,
     abiFragment: AbiFragment,
-    params: Record<string, string | string[] | boolean | boolean[]>,
-    usePaymaster = true
+    params: Record<string, string | string[] | boolean | boolean[]>
   ) => {
     try {
       isRequestPending.value = true;
@@ -72,58 +67,18 @@ export default (context = useContext()) => {
       const valueMethodOption = {
         value: parseEther((params[PAYABLE_AMOUNT_PARAM_NAME] as string) ?? "0"),
       };
-
-      let res;
-      const signerAddress = await signer.getAddress();
-
-      if (BLACKLISTED_ACCOUNT_ADDRESSES.includes(signerAddress)) {
-        usePaymaster = false;
-      }
-
-      // Check if the contract is whitelisted for paymaster sponsorship
-      if (usePaymaster) {
-        const provider = new Provider(context.currentNetwork.value.rpcUrl);
-        const isContractWhitelisted = await checkIsPaymasterWhitelisted(address, provider);
-
-        if (!isContractWhitelisted) {
-          usePaymaster = false;
-        }
-      }
-
-      if (usePaymaster) {
-        res = await method(
-          ...[
-            ...(methodArguments.length ? methodArguments : []),
-            {
-              ...{ from: signerAddress, type: 0 },
-              ...(abiFragment.stateMutability === "payable" ? valueMethodOption : undefined),
-              customData: {
-                gasPerPubdata: utils.DEFAULT_GAS_PER_PUBDATA_LIMIT,
-                paymasterParams: utils.getPaymasterParams(PAYMASTER_ADDRESS, {
-                  type: "General",
-                  innerInput: new Uint8Array(),
-                }),
-              },
-            },
-          ].filter((e) => e !== undefined)
-        ).catch(
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          (e: any) => processException(e, "Please, try again later")
-        );
-      } else {
-        res = await method(
-          ...[
-            ...(methodArguments.length ? methodArguments : []),
-            {
-              ...{ from: signerAddress, type: 0 },
-              ...(abiFragment.stateMutability === "payable" ? valueMethodOption : undefined),
-            },
-          ].filter((e) => e !== undefined)
-        ).catch(
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          (e: any) => processException(e, "Please, try again later")
-        );
-      }
+      const res = await method(
+        ...[
+          ...(methodArguments.length ? methodArguments : []),
+          {
+            ...{ from: await signer.getAddress(), type: 0 },
+            ...(abiFragment.stateMutability === "payable" ? valueMethodOption : undefined),
+          },
+        ].filter((e) => e !== undefined)
+      ).catch(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (e: any) => processException(e, "Please, try again later")
+      );
       response.value = { transactionHash: res.hash };
     } catch (e) {
       isRequestFailed.value = true;
@@ -157,9 +112,9 @@ export default (context = useContext()) => {
       response.value = undefined;
       errorMessage.value = null;
 
-      let signer: Provider | Signer;
+      let signer: JsonRpcProvider | AbstractSigner;
       if (walletAddress.value === null) {
-        signer = new Provider(context.currentNetwork.value.rpcUrl);
+        signer = new JsonRpcProvider(context.currentNetwork.value.rpcUrl);
       } else {
         signer = await getL2Signer();
       }

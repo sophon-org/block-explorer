@@ -21,7 +21,8 @@ import { FilterTransactionsOptions, TransactionService } from "./transaction.ser
 import { ParseTransactionHashPipe, TX_HASH_REGEX_PATTERN } from "../common/pipes/parseTransactionHash.pipe";
 import { swagger } from "../config/featureFlags";
 import { constants } from "../config/docs";
-import { User, UserParam } from "../user/user.decorator";
+import { User } from "../user/user.decorator";
+import { AddUserRolesPipe, UserWithRoles } from "../api/pipes/addUserRoles.pipe";
 
 const entityName = "transactions";
 
@@ -42,11 +43,11 @@ export class TransactionController {
     @Query() filterTransactionsOptions: FilterTransactionsOptionsDto,
     @Query() listFilterOptions: ListFiltersDto,
     @Query() pagingOptions: PagingOptionsWithMaxItemsLimitDto,
-    @User() user: UserParam
+    @User(AddUserRolesPipe) user: UserWithRoles
   ): Promise<Pagination<TransactionDto>> {
     const userFilters: FilterTransactionsOptions = {};
 
-    if (user) {
+    if (user && !user.isAdmin) {
       // In all cases we filter by log topics where the address is mentioned
       userFilters.filterAddressInLogTopics = true;
 
@@ -92,12 +93,28 @@ export class TransactionController {
   @ApiBadRequestResponse({ description: "Transaction hash is invalid" })
   @ApiNotFoundResponse({ description: "Transaction with the specified hash does not exist" })
   public async getTransaction(
-    @Param("transactionHash", new ParseTransactionHashPipe()) transactionHash: string
+    @Param("transactionHash", new ParseTransactionHashPipe()) transactionHash: string,
+    @User() user: UserWithRoles
   ): Promise<TransactionDto> {
     const transactionDetail = await this.transactionService.findOne(transactionHash);
     if (!transactionDetail) {
       throw new NotFoundException();
     }
+
+    if (user) {
+      const transactionLogs = await this.logService.findAll(
+        { transactionHash },
+        {
+          page: 1,
+          limit: 10_000, // default max limit used in pagination-enabled endpoints
+        }
+      );
+      if (!this.transactionService.isTransactionVisibleByUser(transactionDetail, transactionLogs.items, user)) {
+        throw new NotFoundException();
+      }
+      return transactionDetail;
+    }
+
     return transactionDetail;
   }
 
