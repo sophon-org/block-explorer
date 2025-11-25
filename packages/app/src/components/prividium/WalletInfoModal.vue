@@ -182,7 +182,7 @@ const formattedAddress = computed(() => {
       @apply flex items-center justify-between px-4 py-3 bg-neutral-50 rounded-lg border border-neutral-200 hover:bg-neutral-100 transition-colors;
 
       &.wallet-item-active {
-        @apply bg-blue-50 border-blue-300;
+        @apply bg-secondary border-blue;
       }
 
       &.wallet-item-disabled {
