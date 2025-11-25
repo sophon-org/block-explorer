@@ -198,7 +198,7 @@ const formattedAddress = computed(() => {
       }
 
       .active-badge {
-        @apply text-xs font-medium text-blue-600 bg-blue-100 px-2 py-1 rounded;
+        @apply text-xs font-medium text-secondary bg-blue px-2 py-1 rounded;
       }
     }
   }
