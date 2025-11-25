@@ -13,15 +13,15 @@ on:
         required: false
       targetUrl:
         type: string
-        default: 'https://staging-scan-v2.zksync.dev/'
+        default: 'https://staging-scan-v2.zksync.dev'
         required: true
       default_network_value_for_e2e:
         type: string
-        default: '/?network=mainnet'
+        default: '/?network=zksync-os-mainnet'
         required: true
       testnet_network_value_for_e2e:
         type: string
-        default: '/?network=sepolia'
+        default: '/?network=zksync-os-testnet-alpha'
         required: true
       publish_to_allure: #Here we define the variable that can be overwritten by caller workflow
         type: boolean
@@ -46,19 +46,19 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        tags:
-          [
-            '@artifactsSet1',
-            '@artifactsSet2',
-            '@artifactsSet3',
-            '@artifactsSet4',
-            '@redirectionSet1',
-            '@redirectionSet2',
-            '@redirectionSet3',
-            '@copying',
-            '@search',
-            '@testnetSmokeSuite',
-          ]
+        tags: [
+                # Disabled all tests running on Mainnet until Mainnet is deployed
+                # "@artifactsSet1",
+                # "@artifactsSet2",
+                # "@artifactsSet3",
+                # "@artifactsSet4",
+                # "@redirectionSet1",
+                # "@redirectionSet2",
+                # "@redirectionSet3",
+                # "@copying",
+                # "@search",
+                "@testnetSmokeSuite"
+              ]
 
     name: '${{ matrix.tags }}'
     container:

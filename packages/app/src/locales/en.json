@@ -1,7 +1,6 @@
 {
   "general": {
     "l2NetworkName": "Sophon",
-    "l1NetworkName": "Ethereum",
     "execution": "Execution",
     "finality": "Finality"
   },
